@@ -2,7 +2,35 @@
 
 ## Overview
 
-The dashboard application is a sample Go web application from the Grafana Monitoring Workshop. It serves as a test target for the monitoring stack.
+The dashboard provides real-time visibility into the system through multiple interfaces:
+
+1. **Voice-Based Ticket Creation Interface** — Audio input for hands-free ticket submission
+2. **Grafana Monitoring Dashboard** — Real-time metrics and visualization
+3. **Sample Go Application** — Test target for monitoring (from Grafana Workshop)
+
+## Voice-Based Ticket Interface (Agent Vocal IA)
+
+### What It Is
+
+A dedicated web interface that allows users to create GLPI tickets by speaking. The interface:
+- Captures audio input via microphone
+- Sends audio to the n8n webhook (`/nouveau-ticket`)
+- Provides real-time feedback on ticket creation status
+- Shows transcribed text and extracted ticket metadata
+
+**Access**: http://localhost (when dashboard app is running)
+
+See [agent-vocal-ia-interface.png](screenshots/agent-vocal-ia-interface.png) for the interface layout.
+
+### How It Works
+
+1. User clicks microphone icon
+2. Browser captures audio in WebM format
+3. Audio sent to n8n webhook
+4. Workflow processes: audio → transcription → LLM extraction → GLPI creation
+5. Response displayed in UI with ticket number and status
+
+## Monitoring Dashboard Application
 
 **Purpose**: Demonstrate monitoring of a real application with metrics, logging, and traces.
 

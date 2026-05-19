@@ -70,6 +70,12 @@ scrape_configs:
 
 **Web UI**: http://localhost:9090
 
+**Visual Reference**: See [prometheus-targets.png](screenshots/prometheus-targets.png) showing:
+- Active scrape targets (cadvisor, n8n, prometheus, tns_app)
+- Target health status (green = healthy)
+- Last scrape time and duration
+- Endpoint URLs and labels
+
 **Query Examples**:
 ```
 # HTTP request latency (p95)
@@ -106,6 +112,57 @@ Grafana queries Prometheus and Loki to display dashboards, graphs, and alerts.
 **Default Credentials**:
 - Username: `admin`
 - Password: `admin` (or configured in .env)
+
+### Available Dashboards
+
+The system includes four pre-configured dashboards:
+
+#### 1. Docker Monitoring Dashboard
+
+**Visual Reference**: See [grafana-docker-monitoring.png](screenshots/grafana-docker-monitoring.png)
+
+**Metrics Shown**:
+- CPU usage across all containers (33.9% total)
+- Memory usage breakdown by service (5.34 GiB total)
+- Network I/O per container
+- Container uptime and health
+- Resource limits and allocation
+
+**Use Case**: Monitor resource consumption of GLPI, n8n, databases, and monitoring stack itself.
+
+#### 2. Groq API Statistics Dashboard
+
+**Visual Reference**: See [grafana-groq-api-stats.png](screenshots/grafana-groq-api-stats.png)
+
+**Metrics Shown**:
+- Whisper model availability (Audio 71 models available)
+- LLM model usage and inference time
+- API call frequency and distribution
+- Available models and their capacity
+
+**Use Case**: Track Groq API usage, model switching, and performance trends.
+
+#### 3. n8n Workflow Monitoring
+
+**Dashboard File**: `infra/grafana/dashboards/n8n-glpi-monitor.json`
+
+**Metrics Tracked**:
+- Workflow execution count and success rate
+- Average execution duration
+- Error frequency by node type
+- GLPI ticket creation throughput
+
+#### 4. Application Logs (Loki)
+
+**Visual Reference**: See [grafana-loki-logs-dashboard.png](screenshots/grafana-loki-logs-dashboard.png)
+
+**Shown**:
+- Structured logs from all services
+- Log filtering by service, level, and timeframe
+- Recent log volume trends (last 24 hours)
+- JSON log parsing and field extraction
+
+**Use Case**: Troubleshoot workflow failures, debug API errors, and audit ticket creation events.
 
 ### Provisioning
 

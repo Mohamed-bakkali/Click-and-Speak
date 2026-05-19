@@ -7,6 +7,28 @@ This project uses Docker Compose to orchestrate multiple containerized services.
 1. **glpi-docker-compose.yml** — GLPI + MySQL
 2. **tutorial-environment-docker-compose.yml** — n8n, Prometheus, Grafana, Loki, Promtail, sample app
 
+## Running Containers Overview
+
+See [docker-desktop-containers.png](screenshots/docker-desktop-containers.png) for a typical running state showing:
+
+**GLPI Stack**:
+- `glpi-1` — GLPI application container (1.53% CPU, 681 MB memory)
+- `glpi-db-1` — MySQL database (0.61% CPU, 152 MB memory)
+
+**Monitoring & Automation Stack**:
+- `whisper` — OpenAI API service for audio transcription
+- `n8n` — Workflow automation engine
+- `prometheus` — Metrics database
+- `grafana` — Visualization dashboard
+- `loki` — Log aggregation
+- `promtail` — Log shipper
+- `cadvisor` — Docker metrics exporter
+- `app` — Sample Go application (monitoring target)
+
+**Total Resource Usage** (from screenshot):
+- CPU: 111.20% of 800% (multicore available)
+- Memory: 4.81 GB of 7.44 GB (64.6% utilized)
+
 ## GLPI Stack
 
 ### File: infra/glpi-docker-compose.yml

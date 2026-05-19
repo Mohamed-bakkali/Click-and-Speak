@@ -33,6 +33,24 @@ Log to Loki (record event)
 Return Success Response
 ```
 
+### Visual Workflow Diagram
+
+See [n8n-workflow-diagram.png](screenshots/n8n-workflow-diagram.png) for the complete node-level visualization showing:
+- Audio input → format conversion
+- Whisper API transcription node
+- AI BAKKALI (Groq LLM) for structured data extraction
+- GLPI authentication and ticket creation
+- Loki logging for audit trail
+- Output parsing and error handling
+
+### Webhook Configuration
+
+See [n8n-webhook-config.png](screenshots/n8n-webhook-config.png) for the webhook setup panel showing:
+- HTTP POST endpoint configuration
+- Custom body parameters (e.g., `naouveau-ticket`)
+- Request/response handling
+- Production webhook URL
+
 ## "Click & Speak ITSM" Workflow (Recommended)
 
 This is the more complete workflow with better error handling and monitoring.
