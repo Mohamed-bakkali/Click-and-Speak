@@ -59,68 +59,59 @@ This diagram shows the primary data flow: audio input through n8n automation, AP
 ## Workflow Sequence
 
 ```mermaid
-flowchart LR
-    A["1. Receive Audio<br/>HTTP POST /nouveau-ticket"]
-    B["2. Normalize Audio<br/>(.webm → .mp3)"]
-    C["3. Transcribe<br/>Groq Whisper"]
-    D["4. Extract Fields<br/>Groq LLM"]
-    E["5. Format Payload<br/>Ticket JSON"]
-    F["6. Authenticate<br/>GLPI Session"]
-    G["7. Create Ticket<br/>POST /Ticket"]
-    H["8. Record Log<br/>Loki Event"]
-    I["9. Display Metrics<br/>Grafana Dashboard"]
+sequenceDiagram
+    participant Client as User/<br/>Client
+    participant n8n
+    participant Audio as Audio<br/>Processing
+    participant Groq
+    participant GLPI
+    participant Loki
 
-    A --> B --> C --> D --> E --> F --> G --> H
-    H --> I
-    style A fill:#e1f5fe,stroke:#0288d1
-    style C fill:#fff3e0,stroke:#ef6c00
-    style D fill:#fff3e0,stroke:#ef6c00
-    style F fill:#e8f5e9,stroke:#2e7d32
-    style G fill:#e8f5e9,stroke:#2e7d32
-    style H fill:#f1f8e9,stroke:#558b2f
-    style I fill:#f3e5f5,stroke:#1565c0
+    Client->>n8n: POST /nouveau-ticket<br/>(audio file)
+    n8n->>Audio: Normalize<br/>(.webm → .mp3)
+    Audio-->>n8n: MP3 stream
+    n8n->>Groq: POST speech data<br/>(Whisper API)
+    Groq-->>n8n: Transcript text
+    n8n->>Groq: POST transcript<br/>(LLM extraction)
+    Groq-->>n8n: Structured JSON<br/>(title, description, etc.)
+    n8n->>GLPI: POST /initSession<br/>(auth)
+    GLPI-->>n8n: Session token
+    n8n->>GLPI: POST /Ticket<br/>(create ticket)
+    GLPI-->>n8n: ticket_id, status
+    n8n->>Loki: POST event<br/>(ticket created)
+    Loki-->>n8n: 204 OK
+    n8n-->>Client: Success response
 ```
 
-The workflow breaks down the key steps in the n8n automation path: audio intake, AI transcription, extraction, ticket creation, and logging.
+This sequence shows the complete workflow: audio reception, normalization, AI transcription and extraction, GLPI authentication and ticket creation, and event logging.
 
 ## Container Networking
 
 ```mermaid
-flowchart TB
-    subgraph host["Local Docker Host"]
-        n8n["n8n<br/>localhost:5678"]
-        glpi["GLPI<br/>localhost:8080"]
-        grafana["Grafana<br/>localhost:3000"]
-        prometheus["Prometheus<br/>localhost:9090"]
-        loki["Loki<br/>localhost:3100"]
-        app["Dashboard App<br/>internal:80"]
-    end
+sequenceDiagram
+    participant Client as External<br/>Client
+    participant n8n
+    participant GLPI
+    participant MySQL as MySQL<br/>Database
+    participant Groq as Groq<br/>Cloud API
+    participant Prom as Prometheus
+    participant Grafana
+    participant Loki
 
-    subgraph external["External API"]
-        groq["Groq API<br/>api.groq.com"]
-    end
-
-    n8n -->|GLPI API| glpi
-    n8n -->|Groq API| groq
-    n8n -->|Loki Push| loki
-    glpi -->|MySQL| mysql["MySQL<br/>container"]
-    prometheus -->|scrape| n8n
-    prometheus -->|scrape| app
-    promtail["Promtail"] -->|push| loki
-    grafana -->|query| prometheus
-    grafana -->|query| loki
-
-    style host fill:#f3f4f6,stroke:#90a4ae,stroke-width:1px
-    style external fill:#fff8e1,stroke:#ff8f00,stroke-width:1px
-    style n8n fill:#bbdefb,stroke:#1976d2
-    style glpi fill:#c8e6c9,stroke:#388e3c
-    style grafana fill:#ffe0b2,stroke:#f57c00
-    style prometheus fill:#fff9c4,stroke:#fbc02d
-    style loki fill:#dcedc8,stroke:#558b2f
-    style mysql fill:#f0f4c3,stroke:#7cb342
+    Client->>n8n: 1. POST /nouveau-ticket<br/>(Docker port 5678)
+    n8n->>GLPI: 2. REST API calls<br/>(Docker network)
+    GLPI->>MySQL: 3. Read/Write<br/>(internal container)
+    n8n->>Groq: 4. HTTPS to cloud<br/>(external internet)
+    Groq-->>n8n: 5. API response
+    n8n->>Loki: 6. Push logs<br/>(Docker network)
+    Prom->>n8n: 7. Scrape metrics<br/>(:5678/metrics)
+    Prom->>Groq: 8. Scrape metrics<br/>(via proxy)
+    Loki-->>Grafana: 9. Log streams
+    Prom-->>Grafana: 10. Metrics queries
+    Grafana-->>Client: 11. Dashboard<br/>(Docker port 3000)
 ```
 
-This network diagram documents how local containers are exposed, which services scrape metrics, and which external API is required.
+This sequence depicts the network communication flow: client connections to exposed ports (5678, 3000), inter-container traffic over Docker network, and external API calls to Groq.
 
 ## GLPI Integration Sequence
 
@@ -152,35 +143,26 @@ This sequence diagram highlights the message flow between n8n, Groq, GLPI, and L
 ## Monitoring Data Flow
 
 ```mermaid
-flowchart LR
-    subgraph ingestion["Metrics & Logs Ingestion"]
-        n8n_metrics["n8n /metrics"]
-        app_metrics["Dashboard App /metrics"]
-        container_logs["Container Logs"]
-    end
+sequenceDiagram
+    participant n8n as n8n<br/>Metrics
+    participant App as Dashboard<br/>App
+    participant Logs as Container<br/>Logs
+    participant Prom as Prometheus
+    participant Promtail
+    participant Loki
+    participant Grafana as Grafana<br/>Dashboards
 
-    subgraph aggregation["Aggregation"]
-        prometheus["Prometheus"]
-        promtail["Promtail"]
-        loki["Loki"]
-    end
-
-    subgraph visualization["Visualization"]
-        grafana["Grafana"]
-    end
-
-    n8n_metrics --> prometheus
-    app_metrics --> prometheus
-    container_logs --> promtail --> loki
-    prometheus --> grafana
-    loki --> grafana
-
-    style ingestion fill:#e3f2fd,stroke:#1976d2
-    style aggregation fill:#f3e5f5,stroke:#7b1fa2
-    style visualization fill:#e8f5e9,stroke:#2e7d32
+    n8n->>Prom: 1. Expose /metrics
+    App->>Prom: 2. Expose /metrics
+    Logs->>Promtail: 3. Stream logs
+    Prom->>Prom: 4. Scrape all metrics<br/>(15s interval)
+    Promtail->>Loki: 5. Push logs batch
+    Prom->>Grafana: 6. Query metrics
+    Loki->>Grafana: 7. Query logs
+    Grafana-->>Grafana: 8. Render dashboards
 ```
 
-The monitoring flow clarifies where metrics and logs are collected, aggregated, and surfaced in Grafana.
+This sequence illustrates the observability pipeline: metrics scraped by Prometheus, logs shipped by Promtail to Loki, and both data sources queried by Grafana for visualization.
 
 ## Error Handling & Fallbacks
 
