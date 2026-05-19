@@ -3,58 +3,36 @@
 ## High-Level System Design
 
 ```mermaid
-graph TB
-    subgraph input[" INPUT "]
-        audio["🎙️ Audio Webhook<br/>POST /nouveau-ticket"]
+sequenceDiagram
+    participant Input as 🎙️ Audio<br/>Input
+    participant n8n
+    participant Groq as Groq<br/>Cloud
+    participant GLPI
+    participant MySQL
+    participant Loki
+    participant Prom as Prometheus
+    participant Grafana
+
+    Input->>n8n: 1. Audio webhook
+    n8n->>n8n: 2. Normalize audio
+    n8n->>Groq: 3. Transcribe & extract
+    Groq-->>n8n: 4. Text + JSON
+    n8n->>GLPI: 5. Create ticket
+    GLPI->>MySQL: 6. Store ticket
+    MySQL-->>GLPI: 7. Confirm
+    GLPI-->>n8n: 8. Ticket ID
+    n8n->>Loki: 9. Log event
+    Loki-->>n8n: 10. OK
+    par Monitoring
+        Prom->>n8n: 11a. Scrape metrics
+        Prom->>GLPI: 11b. Scrape metrics
+    and
+        Prom->>Grafana: 12. Query metrics
+        Loki->>Grafana: 13. Query logs
     end
-
-    subgraph core[" CORE AUTOMATION (n8n) "]
-        w1["Receive<br/>Webhook"]
-        w2["Normalize<br/>Audio"]
-        w3["Whisper<br/>Transcribe"]
-        w4["LLM<br/>Extract"]
-        w5["Create<br/>Ticket"]
-    end
-
-    subgraph external[" EXTERNAL APIs "]
-        groq["Groq<br/>Whisper + LLM"]
-        glpi_svc["GLPI<br/>HTTP REST"]
-    end
-
-    subgraph backend[" DATA LAYER "]
-        glpi_db["GLPI DB<br/>MySQL"]
-        loki_logs["Loki<br/>Logs"]
-    end
-
-    subgraph observability[" MONITORING "]
-        prom["Prometheus<br/>Metrics"]
-        grafana_dash["Grafana<br/>Dashboards"]
-    end
-
-    audio --> w1 --> w2 --> w3 --> w4 --> w5
-    w3 -.->|API| groq
-    w4 -.->|API| groq
-    w5 -.->|HTTP| glpi_svc
-    glpi_svc --> glpi_db
-    w5 --> loki_logs
-    prom -.->|scrape| w1
-    prom -.->|scrape| glpi_svc
-    loki_logs -.->|stream| grafana_dash
-    prom -.->|query| grafana_dash
-
-    style input fill:#00BCD4,color:#000,stroke:#0097A7,stroke-width:3px
-    style core fill:#66BB6A,color:#000,stroke:#2E7D32,stroke-width:3px
-    style external fill:#FFB74D,color:#000,stroke:#F57C00,stroke-width:3px
-    style backend fill:#AB47BC,color:#fff,stroke:#6A1B9A,stroke-width:3px
-    style observability fill:#42A5F5,color:#000,stroke:#1565C0,stroke-width:3px
-    style w1 fill:#A5D6A7,color:#000,stroke:#388E3C
-    style w2 fill:#A5D6A7,color:#000,stroke:#388E3C
-    style w3 fill:#A5D6A7,color:#000,stroke:#388E3C
-    style w4 fill:#A5D6A7,color:#000,stroke:#388E3C
-    style w5 fill:#A5D6A7,color:#000,stroke:#388E3C
 ```
 
-This diagram shows the primary data flow: audio input through n8n automation, API calls to Groq and GLPI, storage in databases, and monitoring visibility across all layers.
+This diagram shows the complete system flow from audio input through automation, external APIs, data storage, and parallel monitoring—all participants in the architecture and how they interact.
 
 ## Workflow Sequence
 
