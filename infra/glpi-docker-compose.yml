@@ -1,0 +1,29 @@
+name: glpi
+services:
+  glpi:
+    image: glpi/glpi:latest
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - glpi_data:/var/glpi
+    environment:
+      GLPI_DB_HOST: db
+      GLPI_DB_NAME: glpi
+      GLPI_DB_USER: glpi
+      GLPI_DB_PASSWORD: glpi123
+    depends_on:
+      - db
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    volumes:
+      - db_data:/var/lib/mysql
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+      MYSQL_DATABASE: glpi
+      MYSQL_USER: glpi
+      MYSQL_PASSWORD: glpi123
+volumes:
+  glpi_data:
+  db_data:

@@ -1,0 +1,61 @@
+.env
+.env.*
+!.env.example
+
+_docker-inspect/
+_exports/
+_recovered-source/
+
+*.log
+logs/
+tmp/
+.cache/
+
+node_modules/
+vendor/
+dist/
+build/
+
+*.sql
+*.dump
+*.bak
+*.backup
+
+credentials*.json
+*credentials*
+*token*
+*secret*
+*.pem
+*.key
+
+.DS_Store
+Thumbs.db
+
+# Python cache and virtual environments
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Compiled binaries
+dashboard/app/app
+
+# Docker volume backups
+*.tar.gz
+glpi_data_backup/
+db_data_backup/
+
+# n8n and database dumps
+n8n_backup/
+glpi_backup/
