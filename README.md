@@ -25,39 +25,43 @@ This stack provides automation to collect voice-based support requests, process 
 ```mermaid
 flowchart TB
     subgraph user["User / Client"]
-        audio["Audio Input<br/>Webhook Request"]
+        audio["🎙️ Audio Input<br/>POST /nouveau-ticket"]
     end
 
-    subgraph automation["Automation Layer"]
-        webhook["n8n Webhook<br/>(/nouveau-ticket)"]
-        convert["Format Normalize<br/>(.webm → .mp3)"]
-        whisper["Groq Whisper<br/>Speech-to-Text"]
-        extract["Groq LLM<br/>Structured Extraction"]
+    subgraph automation["Automation & Processing"]
+        webhook["n8n Webhook<br/>Listener"]
+        convert["Audio Normalize<br/>.webm → .mp3"]
+        whisper["🤖 Groq Whisper<br/>Speech-to-Text"]
+        extract["🤖 Groq LLM<br/>Extract Data"]
         glpi["GLPI REST API<br/>Create Ticket"]
-        log["Loki Event Log"]
     end
 
     subgraph external["External Services"]
-        groq["Groq Cloud API"]
+        groq["Groq Cloud<br/>API"]
     end
 
-    subgraph monitoring["Monitoring & Visualization"]
+    subgraph storage["Storage & Logs"]
+        log["Loki<br/>Event Log"]
+    end
+
+    subgraph monitoring["Monitoring"]
         prometheus["Prometheus<br/>Metrics"]
-        grafana["Grafana<br/>Dashboards"]
+        grafana["Grafana<br/>Dashboard"]
     end
 
     audio --> webhook --> convert --> whisper --> extract --> glpi
+    whisper -.->|API| groq
+    extract -.->|API| groq
     glpi --> log
-    whisper -.->|API call| groq
-    extract -.->|API call| groq
-    glpi -->|metrics| prometheus
-    log --> grafana
-    prometheus --> grafana
+    glpi -.->|metrics| prometheus
+    log -.->|logs| grafana
+    prometheus -.->|metrics| grafana
 
-    style automation fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
-    style external fill:#fff3e0,stroke:#ef6c00,stroke-width:2px
-    style monitoring fill:#bbdefb,stroke:#1565c0,stroke-width:2px
-    style user fill:#e1f5fe,stroke:#0277bd,stroke-width:2px
+    style user fill:#00BCD4,color:#000,stroke:#0097A7,stroke-width:2px
+    style automation fill:#66BB6A,color:#000,stroke:#2E7D32,stroke-width:2px
+    style external fill:#FFB74D,color:#000,stroke:#F57C00,stroke-width:2px
+    style storage fill:#AB47BC,color:#fff,stroke:#6A1B9A,stroke-width:2px
+    style monitoring fill:#42A5F5,color:#000,stroke:#1565C0,stroke-width:2px
 ```
 
 ## Main Components

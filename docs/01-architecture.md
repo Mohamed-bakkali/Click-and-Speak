@@ -3,52 +3,58 @@
 ## High-Level System Design
 
 ```mermaid
-flowchart TB
-    subgraph user["User / Client"]
-        audio["Audio Input<br/>Webhook /nouveau-ticket"]
+graph TB
+    subgraph input[" INPUT "]
+        audio["🎙️ Audio Webhook<br/>POST /nouveau-ticket"]
     end
 
-    subgraph automation["Automation Layer"]
-        webhook["n8n Webhook<br/>/nouveau-ticket"]
-        convert["Convert to MP3<br/>(if needed)"]
-        whisper["Groq Whisper<br/>Speech-to-Text"]
-        extract["Groq LLM<br/>Structured Ticket Data"]
-        glpi["GLPI REST API<br/>Create Ticket"]
-        log["Loki Log Entry"]
+    subgraph core[" CORE AUTOMATION (n8n) "]
+        w1["Receive<br/>Webhook"]
+        w2["Normalize<br/>Audio"]
+        w3["Whisper<br/>Transcribe"]
+        w4["LLM<br/>Extract"]
+        w5["Create<br/>Ticket"]
     end
 
-    subgraph services["External Services"]
-        groq["Groq Cloud API"]
-        glpi_api["GLPI Application<br/>HTTP API"]
-        mysql["MySQL Database"]
+    subgraph external[" EXTERNAL APIs "]
+        groq["Groq<br/>Whisper + LLM"]
+        glpi_svc["GLPI<br/>HTTP REST"]
     end
 
-    subgraph monitoring["Monitoring & Observability"]
-        prometheus["Prometheus<br/>Metrics Scraper"]
-        loki_store["Loki<br/>Log Store"]
-        grafana["Grafana<br/>Dashboard"]
-        promtail["Promtail<br/>Log Shipper"]
+    subgraph backend[" DATA LAYER "]
+        glpi_db["GLPI DB<br/>MySQL"]
+        loki_logs["Loki<br/>Logs"]
     end
 
-    audio --> webhook --> convert --> whisper --> extract --> glpi
-    glpi --> log
-    whisper -.->|API call| groq
-    extract -.->|API call| groq
-    glpi -.->|HTTP| glpi_api
-    glpi_api -->|R/W| mysql
-    log -.->|push| loki_store
-    prometheus -->|scrape| glpi_api
-    promtail -->|ship| loki_store
-    loki_store -->|query| grafana
-    prometheus -->|query| grafana
+    subgraph observability[" MONITORING "]
+        prom["Prometheus<br/>Metrics"]
+        grafana_dash["Grafana<br/>Dashboards"]
+    end
 
-    style user fill:#e3f2fd,stroke:#1565c0,stroke-width:2px
-    style automation fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px
-    style services fill:#fff3e0,stroke:#ef6c00,stroke-width:2px
-    style monitoring fill:#f3e5f5,stroke:#0277bd,stroke-width:2px
+    audio --> w1 --> w2 --> w3 --> w4 --> w5
+    w3 -.->|API| groq
+    w4 -.->|API| groq
+    w5 -.->|HTTP| glpi_svc
+    glpi_svc --> glpi_db
+    w5 --> loki_logs
+    prom -.->|scrape| w1
+    prom -.->|scrape| glpi_svc
+    loki_logs -.->|stream| grafana_dash
+    prom -.->|query| grafana_dash
+
+    style input fill:#00BCD4,color:#000,stroke:#0097A7,stroke-width:3px
+    style core fill:#66BB6A,color:#000,stroke:#2E7D32,stroke-width:3px
+    style external fill:#FFB74D,color:#000,stroke:#F57C00,stroke-width:3px
+    style backend fill:#AB47BC,color:#fff,stroke:#6A1B9A,stroke-width:3px
+    style observability fill:#42A5F5,color:#000,stroke:#1565C0,stroke-width:3px
+    style w1 fill:#A5D6A7,color:#000,stroke:#388E3C
+    style w2 fill:#A5D6A7,color:#000,stroke:#388E3C
+    style w3 fill:#A5D6A7,color:#000,stroke:#388E3C
+    style w4 fill:#A5D6A7,color:#000,stroke:#388E3C
+    style w5 fill:#A5D6A7,color:#000,stroke:#388E3C
 ```
 
-This diagram shows the path from incoming audio through n8n automation, external AI services, GLPI ticket creation, and monitoring data capture.
+This diagram shows the primary data flow: audio input through n8n automation, API calls to Groq and GLPI, storage in databases, and monitoring visibility across all layers.
 
 ## Workflow Sequence
 
