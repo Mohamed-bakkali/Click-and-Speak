@@ -65,3 +65,6 @@ AGENTS.md
 CLEANUP-SUMMARY.md
 NEXT-STEPS.md
 SCREENSHOT-INTEGRATION.md
+
+# Keep generated/private reports out of the repo
+reports/Project_Report_Mohamed_Bakkali.*
