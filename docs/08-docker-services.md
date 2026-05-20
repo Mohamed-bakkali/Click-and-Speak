@@ -9,7 +9,7 @@ This project uses Docker Compose to orchestrate multiple containerized services.
 
 ## Running Containers Overview
 
-See [docker-desktop-containers.png](screenshots/docker-desktop-containers.png) for a typical running state showing:
+-![Docker Desktop containers view](screenshots/docker-desktop-containers.png)
 
 **GLPI Stack**:
 - `glpi-1` — GLPI application container (1.53% CPU, 681 MB memory)

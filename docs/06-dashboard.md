@@ -20,7 +20,7 @@ A dedicated web interface that allows users to create GLPI tickets by speaking. 
 
 **Access**: http://localhost (when dashboard app is running)
 
-See [agent-vocal-ia-interface.png](screenshots/agent-vocal-ia-interface.png) for the interface layout.
+![Voice interface — agent vocal IA](screenshots/agent-vocal-ia-interface.png)
 
 ### How It Works
 

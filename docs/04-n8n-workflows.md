@@ -35,7 +35,9 @@ Return Success Response
 
 ### Visual Workflow Diagram
 
-See [n8n-workflow-diagram.png](screenshots/n8n-workflow-diagram.png) for the complete node-level visualization showing:
+![n8n workflow diagram](screenshots/n8n-workflow-diagram.png)
+
+Complete node-level visualization showing:
 - Audio input → format conversion
 - Whisper API transcription node
 - AI BAKKALI (Groq LLM) for structured data extraction
@@ -45,7 +47,9 @@ See [n8n-workflow-diagram.png](screenshots/n8n-workflow-diagram.png) for the com
 
 ### Webhook Configuration
 
-See [n8n-webhook-config.png](screenshots/n8n-webhook-config.png) for the webhook setup panel showing:
+![n8n webhook configuration](screenshots/n8n-webhook-config.png)
+
+Webhook setup panel showing:
 - HTTP POST endpoint configuration
 - Custom body parameters (e.g., `naouveau-ticket`)
 - Request/response handling

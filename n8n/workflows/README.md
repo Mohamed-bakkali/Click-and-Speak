@@ -10,7 +10,7 @@ This folder contains n8n workflow definitions exported as JSON.
 
 ### 1. "My workflow"
 
-**Status**: Inactive (demo/reference)
+Inactive (demo/reference)
 
 **Purpose**: Basic audio → AI → GLPI ticket flow
 
@@ -25,7 +25,7 @@ This folder contains n8n workflow definitions exported as JSON.
 
 ### 2. "Click & Speak ITSM" (Recommended)
 
-**Status**: Active
+Active
 
 **Purpose**: Production workflow with enhanced error handling and Loki logging
 
@@ -56,7 +56,7 @@ To export your modified workflows:
 1. In n8n: Workflow → Menu → Export
 2. Save as `.json` file
 3. Replace `workflows.json` in this folder
-4. Commit to git (credentials are NOT exported)
+4. Commit to git (credentials are not exported)
 
 **Note**: n8n automatically excludes credentials from exports for security.
 

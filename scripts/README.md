@@ -8,7 +8,7 @@ Utility scripts for the project.
 
 **Purpose**: Monitor Groq API usage and push metrics to Loki.
 
-**Status**: Example/demo — uses environment variable for API key; see .env.example
+Example/demo — uses environment variable for API key; see .env.example
 
 **What it does**:
 - Queries Groq API for list of available models
@@ -26,7 +26,7 @@ Utility scripts for the project.
 # Install dependencies
 pip install requests
 
-# Set API key (DO NOT hardcode)
+# Set API key (do not hardcode)
 export GROQ_API_KEY="gsk_your_key_here"
 
 # Run
@@ -104,8 +104,8 @@ Sends logs to Loki with labels:
 - ✓ Log errors to Loki or monitoring system
 - ✓ Add timeouts to external API calls
 - ✓ Implement exponential backoff for retries
-- ✗ Do NOT hardcode API keys
-- ✗ Do NOT commit credentials
+- ✗ Do not hardcode API keys
+- ✗ Do not commit credentials
 - ✗ Do NOT assume services are always reachable
 
 ---

@@ -113,9 +113,9 @@ Grafana queries Prometheus and Loki to display dashboards, graphs, and alerts.
 
 The system includes four pre-configured dashboards:
 
-#### 1. Docker Monitoring Dashboard
+-#### 1. Docker Monitoring Dashboard
 
-**Visual Reference**: See [grafana-docker-monitoring.png](screenshots/grafana-docker-monitoring.png)
+![Grafana Docker monitoring](screenshots/grafana-docker-monitoring.png)
 
 **Metrics Shown**:
 - CPU usage across all containers (33.9% total)
@@ -145,9 +145,9 @@ The system includes four pre-configured dashboards:
 - Error frequency by node type
 - GLPI ticket creation throughput
 
-#### 4. Application Logs (Loki)
+-#### 4. Application Logs (Loki)
 
-**Visual Reference**: See [grafana-loki-logs-dashboard.png](screenshots/grafana-loki-logs-dashboard.png)
+![Grafana Loki logs dashboard](screenshots/grafana-loki-logs-dashboard.png)
 
 **Shown**:
 - Structured logs from all services

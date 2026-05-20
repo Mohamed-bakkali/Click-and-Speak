@@ -22,19 +22,21 @@ services:
     image: glpi/glpi:latest
     ports:
       - "8080:80"              # HTTP only (port 80 inside container → 8080 on host)
-    volumes:
-      - glpi_data:/var/glpi    # Persistent GLPI config and data
-    environment:
-      GLPI_DB_HOST: db         # MySQL service name (Docker internal)
-      GLPI_DB_NAME: glpi       # Database name
-      GLPI_DB_USER: glpi       # MySQL username
-      GLPI_DB_PASSWORD: glpi123 # MySQL password (CHANGE IN PRODUCTION)
-    depends_on:
-      - db
+  ![GLPI dashboard overview](screenshots/glpi-dashboard-overview.png)
 
-  db:
-    image: mysql:8.0
-    volumes:
+  Main dashboard showing:
+  - **82 Tickets** — Total tickets in system
+  - **Ticket Status Breakdown**:
+    - 57 Incoming (not yet assigned)
+    - 2 Assigned
+    - 18 Resolved
+    - 5 Closed
+    - 0 Delayed
+    - 0 Recurring
+  - **Charts**:
+    - Evolution of tickets over time (trend line)
+    - Ticket status distribution by month (stacked bar)
+    - Top categories and sources
       - db_data:/var/lib/mysql # Persistent MySQL data
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
@@ -98,7 +100,9 @@ For demo, workflow uses `glpi:glpi` credentials. For production:
 
 ### GLPI Dashboard Overview
 
-See [glpi-dashboard-overview.png](screenshots/glpi-dashboard-overview.png) for the main dashboard showing:
+![GLPI dashboard overview](screenshots/glpi-dashboard-overview.png)
+
+Main dashboard showing:
 - **82 Tickets** — Total tickets in system
 - **Ticket Status Breakdown**:
   - 57 Incoming (not yet assigned)
@@ -112,11 +116,7 @@ See [glpi-dashboard-overview.png](screenshots/glpi-dashboard-overview.png) for t
   - Ticket status distribution by month (stacked bar)
   - Top categories and sources
 
-See [glpi-ticket-detail.png](screenshots/glpi-ticket-detail.png) for a sample ticket showing:
-- Ticket metadata (date, type, category, urgency, priority)
-- Full description and status workflow
-- Comments and history
-- Attached assets and related items
+Sample ticket details are available in the GLPI UI; a screenshot of the individual ticket view is not included in this repository.
 
 ### Authentication
 
