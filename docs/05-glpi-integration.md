@@ -17,32 +17,38 @@ GLPI runs in Docker via `infra/glpi-docker-compose.yml`.
 ### Services
 
 ```yaml
+version: "3.8"
+name: glpi
 services:
   glpi:
     image: glpi/glpi:latest
+    restart: unless-stopped
     ports:
-      - "8080:80"              # HTTP only (port 80 inside container → 8080 on host)
-  ![GLPI dashboard overview](screenshots/glpi-dashboard-overview.png)
+      - "8080:80"
+    volumes:
+      - glpi_data:/var/glpi
+    environment:
+      GLPI_DB_HOST: db
+      GLPI_DB_NAME: glpi
+      GLPI_DB_USER: glpi
+      GLPI_DB_PASSWORD: glpi123
+    depends_on:
+      - db
 
-  Main dashboard showing:
-  - **82 Tickets** — Total tickets in system
-  - **Ticket Status Breakdown**:
-    - 57 Incoming (not yet assigned)
-    - 2 Assigned
-    - 18 Resolved
-    - 5 Closed
-    - 0 Delayed
-    - 0 Recurring
-  - **Charts**:
-    - Evolution of tickets over time (trend line)
-    - Ticket status distribution by month (stacked bar)
-    - Top categories and sources
-      - db_data:/var/lib/mysql # Persistent MySQL data
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    volumes:
+      - db_data:/var/lib/mysql
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
       MYSQL_DATABASE: glpi
       MYSQL_USER: glpi
       MYSQL_PASSWORD: glpi123
+
+volumes:
+  glpi_data:
+  db_data:
 ```
 
 ### Starting GLPI

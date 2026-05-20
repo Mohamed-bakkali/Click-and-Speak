@@ -25,6 +25,7 @@ credentials*.json
 *credentials*
 *token*
 *secret*
+!docs/10-security-and-secrets.md
 *.pem
 *.key
 
