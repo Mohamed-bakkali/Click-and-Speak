@@ -8,7 +8,7 @@ Utility scripts for the project.
 
 **Purpose**: Monitor Groq API usage and push metrics to Loki.
 
-**Status**: ⚠️ **SECURITY WARNING** — Contains exposed API key, do not use as-is
+**Status**: Example/demo — uses environment variable for API key; see .env.example
 
 **What it does**:
 - Queries Groq API for list of available models

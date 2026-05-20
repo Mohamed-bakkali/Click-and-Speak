@@ -70,11 +70,7 @@ scrape_configs:
 
 **Web UI**: http://localhost:9090
 
-**Visual Reference**: See [prometheus-targets.png](screenshots/prometheus-targets.png) showing:
-- Active scrape targets (cadvisor, n8n, prometheus, tns_app)
-- Target health status (green = healthy)
-- Last scrape time and duration
-- Endpoint URLs and labels
+**Visual Reference**: See the screenshots in `docs/screenshots/` for monitoring dashboards and container views.
 
 **Query Examples**:
 ```
@@ -131,9 +127,6 @@ The system includes four pre-configured dashboards:
 **Use Case**: Monitor resource consumption of GLPI, n8n, databases, and monitoring stack itself.
 
 #### 2. Groq API Statistics Dashboard
-
-**Visual Reference**: See [grafana-groq-api-stats.png](screenshots/grafana-groq-api-stats.png)
-
 **Metrics Shown**:
 - Whisper model availability (Audio 71 models available)
 - LLM model usage and inference time

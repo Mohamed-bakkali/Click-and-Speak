@@ -59,3 +59,9 @@ db_data_backup/
 # n8n and database dumps
 n8n_backup/
 glpi_backup/
+
+# Owner-only notes: do not push these repository-maintenance files
+AGENTS.md
+CLEANUP-SUMMARY.md
+NEXT-STEPS.md
+SCREENSHOT-INTEGRATION.md
