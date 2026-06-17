@@ -4,7 +4,11 @@ A containerized automation platform that connects GLPI IT ticketing with n8n wor
 
 ## Demo Video
 
-https://github.com/user-attachments/assets/ce51674a-5716-4ba2-8f3d-a5a7fb46c11e
+<p align="center">
+  <a href="https://github.com/user-attachments/assets/ce51674a-5716-4ba2-8f3d-a5a7fb46c11e">
+    <img src="docs/screenshots/grafana-docker-monitoring.png" alt="Watch the demo video" width="800">
+  </a>
+</p>
 
 ## What It Does
 
