@@ -2,6 +2,10 @@
 
 A containerized automation platform that connects GLPI IT ticketing with n8n workflow automation and a Grafana monitoring stack. The project enables audio-based ticket creation through AI transcription, real-time dashboards, and log aggregation.
 
+## Demo Video
+
+![Demo Video](docs/screenshots/Video_Project.mp4)
+
 ## What It Does
 
 This project integrates three core systems:
