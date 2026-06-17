@@ -4,12 +4,10 @@ A containerized automation platform that connects GLPI IT ticketing with n8n wor
 
 ## Demo Video
 
-<video width="100%" controls>
-  <source src="https://github.com/Mohamed-bakkali/Click-and-Speak/raw/refs/heads/main/docs/screenshots/Video_Project.mp4" type="video/mp4">
-  Your browser does not support the video player.
-</video>
+https://github.com/user-attachments/assets/ce51674a-5716-4ba2-8f3d-a5a7fb46c11e
 
 ## What It Does
+
 
 This project integrates three core systems:
 
