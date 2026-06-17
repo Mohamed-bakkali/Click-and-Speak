@@ -1,0 +1,71 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Click and Speak — Demo Video</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: #0d1117;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .video-container {
+      width: 100%;
+      max-width: 1100px;
+    }
+
+    video {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 90vh;
+      margin: 0 auto;
+      background: #000;
+      border-radius: 10px;
+    }
+  </style>
+
+</head>
+
+<body>
+  <main class="video-container">
+    <video
+      controls
+      playsinline
+      preload="metadata"
+      poster="./screenshots/Thumbnail_play.jpeg"
+    >
+      <source
+        src="./screenshots/Video_Project.mp4"
+        type="video/mp4"
+      >
+
+```
+  Your browser does not support HTML video.
+</video>
+```
+
+  </main>
+</body>
+</html>

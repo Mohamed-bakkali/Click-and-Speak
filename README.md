@@ -5,10 +5,21 @@ A containerized automation platform that connects GLPI IT ticketing with n8n wor
 ## Demo Video
 
 <p align="center">
-  <a href="https://github.com/user-attachments/assets/ce51674a-5716-4ba2-8f3d-a5a7fb46c11e">
-    <img src="docs/screenshots/Thumbnail_play.jpeg" alt="Watch the demo video" width="800">
+  <a href="https://mohamed-bakkali.github.io/Click-and-Speak/demo.html">
+    <img
+      src="./docs/screenshots/Thumbnail_play.jpeg"
+      alt="Watch the Click and Speak demo video"
+      width="800"
+    >
   </a>
 </p>
+
+<p align="center">
+  <a href="https://mohamed-bakkali.github.io/Click-and-Speak/demo.html">
+    ▶ Watch the demo video
+  </a>
+</p>
+
 
 ## What It Does
 
