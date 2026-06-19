@@ -226,10 +226,9 @@ Quick checks:
 - Loki storage is ephemeral (no persistent volume configured)
 
 ### Future Work
-- [ ] Add email notification triggers
+
 - [ ] Implement GLPI Change Management automation
 - [ ] Add user feedback loop to ticket creation
-- [ ] Multi-language support for LLM extraction
 - [ ] Kubernetes deployment manifests
 - [ ] CI/CD pipeline integration tests
 
